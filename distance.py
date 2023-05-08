@@ -7,7 +7,6 @@ GPIO.setup(7, GPIO.OUT)
 GPIO.setup(12, GPIO.OUT)
 GPIO.setup(11, GPIO.IN)
 
-# pi_pwm = GPIO.PWM(12, 1000)
 pi_pwm = GPIO.PWM(12, 50)
 pi_pwm.start(0)
 
@@ -32,7 +31,6 @@ try:
         distance = (total_time * 34300) / 2
 
         #max distance is about 65
-        # led_power = 100 - (100/50 * distance)
 
         motor_power = ((180 / 55) * distance)/18 + 2
         if motor_power > 100:
@@ -40,6 +38,8 @@ try:
         if motor_power < 0:
             motor_power = 0
 
+        # Smoothing function
+        # Keep only 20 measurements, then take the mean measure to set value
         motor_powers.append(motor_power)
         if len(motor_powers) > 20:
             motor_powers.pop(0)
